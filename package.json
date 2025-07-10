@@ -10,15 +10,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rainbow-me/rainbowkit": "^1.3.0",
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@tanstack/react-query": "^5.82.0",
+    "@wagmi/core": "^2.17.3",
     "axios": "^1.6.0",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.294.0",
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^1.19.0",
-    "wagmi": "^1.4.0"
+    "viem": "^2.31.7",
+    "wagmi": "^2.15.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

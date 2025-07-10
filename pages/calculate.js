@@ -93,24 +93,15 @@ export default function CalculatePage() {
 
       <div className="min-h-screen bg-rice ink-wash-bg cloud-pattern">
         <div className="container mx-auto px-4 py-8 md:py-16">
-          {/* 页面头部 */}
-          <header className="text-center mb-12 md:mb-20">
-            <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
-              小六壬神算
-            </h1>
-            <p className="responsive-text text-ink-lighter mt-6 max-w-2xl mx-auto leading-relaxed">
-              古法占卜，神明指引，为您解读天机
-            </p>
-          </header>
 
           {/* 主内容区 */}
           <main className="max-w-2xl mx-auto">
             {/* 显示用户愿望 */}
             <div className="floating-card mb-8">
-              <h2 className="text-xl font-kai text-ink mb-4">您的心愿</h2>
+              {/* <h2 className="text-xl font-kai text-ink mb-4">您的心愿</h2> */}
               <div className="bg-ink/5 rounded-lg p-4 border-l-4 border-red-temple">
                 <p className="text-ink font-kai leading-relaxed">
-                  {wish}
+                  我的愿望是：{wish}
                 </p>
               </div>
             </div>
@@ -141,29 +132,28 @@ export default function CalculatePage() {
                 ))}
               </div>
 
-              <div className="text-center text-sm text-ink-lighter font-kai mb-6">
+              <div className="text-center text-sm text-ink-lighter font-kai">
                 请输入您心中所想的数字，让神明感受您的诚意
-              </div>
-
-              <div className="flex justify-center space-x-4">
-                <button
-                  onClick={handleCalculate}
-                  disabled={numbers.some(num => num === '')}
-                  className="ink-button disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  开始算命
-                </button>
               </div>
             </div>
 
-            {/* 底部按钮 */}
-            <div className="text-center">
-              <button
-                onClick={handleModifyWish}
-                className="px-6 py-3 text-ink-light hover:text-ink transition-colors duration-300 font-kai border border-ink-light rounded hover:border-ink"
-              >
-                修改愿望
-              </button>
+            {/* 操作按钮区域 */}
+            <div className="floating-card mb-8">
+              <div className="space-y-4">
+                <button
+                  onClick={handleCalculate}
+                  disabled={numbers.some(num => num === '')}
+                  className="w-full ink-button disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  开始算命
+                </button>
+                <button
+                  onClick={handleModifyWish}
+                  className="w-full ink-button bg-transparent border-2 border-ink text-ink hover:bg-ink hover:text-white"
+                >
+                  修改愿望
+                </button>
+              </div>
             </div>
 
             {/* 装饰元素 */}

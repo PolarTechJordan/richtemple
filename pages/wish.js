@@ -1,44 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useAccount } from 'wagmi'
 import FloatingSidebar from '../components/FloatingSidebar'
-import { checkWalletConnection, connectWallet as connectWalletUtil, formatAddress } from '../utils/walletUtils'
+import WalletConnectButton from '../components/WalletConnectButton'
 
 export default function WishPage() {
   const [wish, setWish] = useState('')
-  const [isConnected, setIsConnected] = useState(false)
-  const [walletAddress, setWalletAddress] = useState('')
+  const [showConnectPrompt, setShowConnectPrompt] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    // 检查是否已连接钱包
-    const checkConnection = async () => {
-      try {
-        const { connected, accounts } = await checkWalletConnection()
-        if (connected && accounts.length > 0) {
-          setIsConnected(true)
-          setWalletAddress(accounts[0])
-        }
-      } catch (error) {
-        console.error('检查钱包连接失败:', error)
-      }
-    }
-    
-    checkConnection()
-  }, [])
-
-  const connectWallet = async () => {
-    try {
-      const result = await connectWalletUtil()
-      if (result.success) {
-        setIsConnected(true)
-        setWalletAddress(result.address)
-      }
-    } catch (error) {
-      console.error('连接钱包失败:', error)
-      alert(error.message || '连接钱包失败，请重试')
-    }
-  }
+  const { address, isConnected } = useAccount()
 
   const handleWishChange = (e) => {
     setWish(e.target.value)
@@ -50,6 +21,12 @@ export default function WishPage() {
   const handleNextStep = () => {
     if (!wish.trim()) {
       alert('请输入您的心愿')
+      return
+    }
+    
+    // 检查钱包连接状态
+    if (!isConnected || !address) {
+      setShowConnectPrompt(true)
       return
     }
     
@@ -94,23 +71,7 @@ export default function WishPage() {
 
         {/* 钱包连接按钮 */}
         <div className="absolute top-4 right-4 z-10">
-          {isConnected ? (
-            <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-ink">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="font-kai text-sm text-ink">
-                  {formatAddress(walletAddress)}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <button
-              onClick={connectWallet}
-              className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-ink hover:shadow-ink-lg transition-all duration-300 font-kai text-ink"
-            >
-              连接钱包
-            </button>
-          )}
+          <WalletConnectButton />
         </div>
 
         <div className="container mx-auto px-4 py-8 md:py-16">
@@ -137,20 +98,14 @@ export default function WishPage() {
                   onChange={handleWishChange}
                   className="w-full h-40 ink-input font-kai resize-none"
                   placeholder="请写下您的心愿..."
-                  maxLength={500}
+                  maxLength={300}
                 />
                 <div className="text-right text-sm text-ink-lighter mt-2">
-                  {wish.length}/500
+                  {wish.length}/300
                 </div>
               </div>
               
-              <div className="flex justify-between items-center">
-                <button
-                  onClick={() => router.back()}
-                  className="px-6 py-3 text-ink-light hover:text-ink transition-colors duration-300 font-kai"
-                >
-                  返回
-                </button>
+              <div className="flex justify-center items-center">
                 <button
                   onClick={handleNextStep}
                   className="ink-button"
@@ -173,6 +128,43 @@ export default function WishPage() {
 
         {/* 底部装饰 */}
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-ink/5 to-transparent pointer-events-none"></div>
+        
+        {/* 连接钱包提示弹窗 */}
+        {showConnectPrompt && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm animate-fadeIn">
+            <div className="bg-white rounded-lg shadow-xl max-w-md mx-4 p-6 animate-modalFadeIn">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-kai text-ink mb-2">需要连接钱包</h3>
+                <p className="text-ink-light font-kai mb-6">
+                  请先连接您的钱包，才能进行下一步祈福操作
+                </p>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setShowConnectPrompt(false)}
+                    className="flex-1 px-4 py-2 border border-ink/20 rounded-lg text-ink-light hover:bg-ink/5 transition-colors font-kai"
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowConnectPrompt(false)
+                      // 滚动到钱包连接按钮
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
+                    className="flex-1 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-kai"
+                  >
+                    去连接
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )

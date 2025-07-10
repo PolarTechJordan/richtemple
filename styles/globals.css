@@ -162,6 +162,11 @@ body {
   .responsive-text {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
   }
+  
+  /* 弹窗动画 */
+  .animate-modalFadeIn {
+    animation: modalFadeIn 0.3s ease-out forwards;
+  }
 }
 
 /* 自定义动画 */
@@ -190,6 +195,17 @@ body {
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes modalFadeIn {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(-10px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
 }
 
 @keyframes slideUp {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useAccount } from 'wagmi'
 import deepseekService from '../services/deepseekService'
-import { checkWalletConnection } from '../utils/walletUtils'
 
 export default function ResultPage() {
   const [wish, setWish] = useState('')
@@ -13,6 +13,7 @@ export default function ResultPage() {
   const [paymentCurrency, setPaymentCurrency] = useState('ETH')
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const router = useRouter()
+  const { address, isConnected } = useAccount()
 
   useEffect(() => {
     const initializePage = async () => {
@@ -61,8 +62,7 @@ export default function ResultPage() {
 
     try {
       // 检查钱包连接
-      const { connected, accounts } = await checkWalletConnection()
-      if (!connected || accounts.length === 0) {
+      if (!isConnected || !address) {
         alert('请先连接钱包')
         return
       }
@@ -129,7 +129,7 @@ export default function ResultPage() {
                   </h2>
                   <div className="bg-ink/5 rounded-lg p-4 border-l-4 border-red-temple mb-4">
                     <p className="text-ink font-kai text-sm">
-                      您的心愿：{wish}
+                      我的心愿：{wish}
                     </p>
                     <p className="text-ink-light font-kai text-sm mt-2">
                       神选数字：{numbers.join('、')}
@@ -196,31 +196,81 @@ export default function ResultPage() {
               <div className="max-w-md mx-auto">
                 <div className="mb-6">
                   <label className="block text-ink-light font-kai mb-2">
-                    香火数量
+                    香火金额
                   </label>
-                  <input
-                    type="number"
-                    min="0.001"
-                    step="0.001"
-                    value={paymentAmount}
-                    onChange={(e) => setPaymentAmount(e.target.value)}
-                    className="w-full ink-input font-kai"
-                    placeholder="请输入香火数量"
-                  />
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min="0.001"
+                      value={paymentAmount}
+                      onChange={(e) => setPaymentAmount(e.target.value)}
+                      className="w-full ink-input font-kai pr-20"
+                      placeholder="输入香火金额..."
+                    />
+                    <select
+                      value={paymentCurrency}
+                      onChange={(e) => {
+                        setPaymentCurrency(e.target.value)
+                        setPaymentAmount('') // 切换币种时清空金额
+                      }}
+                      className="absolute right-0 top-0 h-full w-16 bg-transparent border-0 font-kai text-center text-ink focus:outline-none focus:ring-0 cursor-pointer"
+                    >
+                      <option value="ETH">ETH</option>
+                      <option value="USDT">USDT</option>
+                    </select>
+                  </div>
                 </div>
 
+                {/* 快速选择金额 */}
                 <div className="mb-6">
-                  <label className="block text-ink-light font-kai mb-2">
-                    支付币种
+                  <label className="block text-ink-light font-kai mb-2 text-sm">
+                    快速选择
                   </label>
-                  <select
-                    value={paymentCurrency}
-                    onChange={(e) => setPaymentCurrency(e.target.value)}
-                    className="w-full ink-input font-kai"
-                  >
-                    <option value="ETH">ETH</option>
-                    <option value="USDT">USDT</option>
-                  </select>
+                  <div className="grid grid-cols-3 gap-2">
+                    {paymentCurrency === 'ETH' ? (
+                      <>
+                        <button
+                          onClick={() => setPaymentAmount('0.01')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          0.01 ETH
+                        </button>
+                        <button
+                          onClick={() => setPaymentAmount('0.1')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          0.1 ETH
+                        </button>
+                        <button
+                          onClick={() => setPaymentAmount('1')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          1 ETH
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setPaymentAmount('5')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          5 USDT
+                        </button>
+                        <button
+                          onClick={() => setPaymentAmount('10')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          10 USDT
+                        </button>
+                        <button
+                          onClick={() => setPaymentAmount('20')}
+                          className="px-3 py-2 border border-ink-light rounded hover:bg-ink hover:text-white transition-colors duration-300 font-kai text-sm"
+                        >
+                          20 USDT
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="text-center">

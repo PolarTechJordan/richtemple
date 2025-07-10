@@ -1,5 +1,13 @@
 import '../styles/globals.css'
 import { useEffect } from 'react'
+import { WagmiProvider } from 'wagmi'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { wagmiConfig } from '../utils/wagmiConfig'
+import { setupEthereumProtection } from '../utils/ethereumProtection'
+import '@rainbow-me/rainbowkit/styles.css'
+
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
@@ -18,62 +26,24 @@ export default function App({ Component, pageProps }) {
     fontLink.rel = 'stylesheet'
     document.head.appendChild(fontLink)
     
-    // 全局错误处理
-    const handleError = (error) => {
-      console.error('全局错误:', error)
-      
-      // 处理ethereum对象重定义错误
-      if (error.message && error.message.includes('Cannot redefine property: ethereum')) {
-        console.warn('检测到ethereum对象重定义错误，已忽略')
-        return true // 阻止错误冒泡
-      }
-      
-      return false
-    }
-    
-    // 监听全局错误
-    window.addEventListener('error', (event) => {
-      if (handleError(event.error)) {
-        event.preventDefault()
-      }
-    })
-    
-    // 监听Promise拒绝
-    window.addEventListener('unhandledrejection', (event) => {
-      if (handleError(event.reason)) {
-        event.preventDefault()
-      }
-    })
-    
-    // 保护ethereum对象
-    const protectEthereumObject = () => {
-      if (typeof window !== 'undefined' && window.ethereum) {
-        try {
-          // 尝试冻结ethereum对象的某些属性以防止重定义
-          if (Object.getOwnPropertyDescriptor(window, 'ethereum')) {
-            const descriptor = Object.getOwnPropertyDescriptor(window, 'ethereum')
-            if (descriptor.configurable) {
-              Object.defineProperty(window, 'ethereum', {
-                ...descriptor,
-                configurable: false
-              })
-            }
-          }
-        } catch (error) {
-          // 如果保护失败，记录但不阻止应用运行
-          console.warn('无法保护ethereum对象:', error)
-        }
-      }
-    }
-    
-    // 延迟执行保护，确保钱包扩展已加载
-    setTimeout(protectEthereumObject, 100)
+    // 设置ethereum对象保护
+    const cleanup = setupEthereumProtection()
     
     return () => {
       document.head.removeChild(meta)
       document.head.removeChild(fontLink)
+      // 清理ethereum保护
+      if (cleanup) cleanup()
     }
   }, [])
 
-  return <Component {...pageProps} />
+  return (
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  )
 } 

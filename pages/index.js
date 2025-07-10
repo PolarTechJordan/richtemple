@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import ClientOnlyVideo from '../components/ClientOnlyVideo'
 
 export default function InitialPage() {
   const [videoEnded, setVideoEnded] = useState(false)
@@ -62,18 +63,15 @@ export default function InitialPage() {
         className="relative w-full h-screen overflow-hidden bg-ink"
         onMouseMove={handleMouseMove}
       >
-        {/* 视频背景 */}
-        <video
-          ref={videoRef}
+        {/* 视频背景 - 客户端渲染组件 */}
+        <ClientOnlyVideo
+          src="/videos/1.mp4"
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnd}
-        >
-          <source src="/videos/1.mp4" type="video/mp4" />
-          您的浏览器不支持视频播放
-        </video>
+        />
 
         {/* 涟漪效果 */}
         {ripples.map(ripple => (

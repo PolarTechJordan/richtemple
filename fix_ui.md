@@ -447,4 +447,302 @@ useEffect(() => {
 - ✅ 从任何页面点击"联系我们"都会跳转到merit页面并自动显示联系信息
 - ✅ 从任何页面点击"法物流通"都会跳转到store页面
 - ✅ 所有页面的导航逻辑统一且智能化
-- ✅ 支持URL参数直接访问特定section 
+- ✅ 支持URL参数直接访问特定section
+
+## 🎨 界面优化：用户体验改进
+
+### 问题描述
+用户反馈了几个界面交互问题需要优化：
+
+1. **wish.js页面**：
+   - "下一步"按钮需要居中显示
+   - "连接钱包"按钮需要支持退出登录功能
+
+2. **calculate.js页面**：
+   - "开始算命"和"修改愿望"按钮需要并列放置
+   - 保持按钮样式一致，避免元素重叠
+
+3. **result.js页面**：
+   - 香火支付界面需要优化
+   - 输入框和币种选择需要整合
+   - 添加快速选择金额功能
+
+### 解决方案 ✅ 已完成
+
+#### 1. wish.js页面优化
+```javascript
+// 修复前 - 左右布局
+<div className="flex justify-between items-center">
+  <button onClick={() => router.back()}>返回</button>
+  <button onClick={handleNextStep}>下一步</button>
+</div>
+
+// 修复后 - 居中布局
+<div className="flex justify-center items-center">
+  <button onClick={handleNextStep}>下一步</button>
+</div>
+
+// 钱包连接按钮增加退出功能
+{isConnected ? (
+  <button
+    onClick={() => {
+      setIsConnected(false)
+      setWalletAddress('')
+      localStorage.removeItem('walletConnected')
+    }}
+    className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-ink hover:shadow-ink-lg transition-all duration-300 font-kai text-ink group"
+  >
+    <div className="flex items-center space-x-2">
+      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+      <span className="text-sm">{formatAddress(walletAddress)}</span>
+      <span className="text-xs text-ink-light group-hover:text-ink ml-1">
+        (点击退出)
+      </span>
+    </div>
+  </button>
+) : (
+  <button onClick={connectWallet}>连接钱包</button>
+)}
+```
+
+#### 2. calculate.js页面按钮优化
+```javascript
+// 修复前 - 分离布局
+<div className="flex justify-center space-x-4">
+  <button onClick={handleCalculate}>开始算命</button>
+</div>
+<div className="text-center">
+  <button onClick={handleModifyWish}>修改愿望</button>
+</div>
+
+// 修复后 - 并列布局，样式统一
+<div className="flex justify-center space-x-4">
+  <button
+    onClick={handleModifyWish}
+    className="ink-button bg-transparent border-2 border-ink text-ink hover:bg-ink hover:text-white"
+  >
+    修改愿望
+  </button>
+  <button
+    onClick={handleCalculate}
+    disabled={numbers.some(num => num === '')}
+    className="ink-button disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    开始算命
+  </button>
+</div>
+```
+
+#### 3. result.js香火支付界面优化
+```javascript
+// 修复前 - 分离的输入框和选择器
+<div className="mb-6">
+  <label>香火数量</label>
+  <input placeholder="请输入香火数量" />
+</div>
+<div className="mb-6">
+  <label>支付币种</label>
+  <select>
+    <option value="ETH">ETH</option>
+    <option value="USDT">USDT</option>
+  </select>
+</div>
+
+// 修复后 - 整合的输入界面 + 快速选择
+<div className="mb-6">
+  <label>香火金额</label>
+  <div className="flex space-x-2">
+    <input 
+      className="flex-1 ink-input font-kai"
+      placeholder="输入香火金额..."
+    />
+    <select className="w-20 ink-input font-kai text-center">
+      <option value="ETH">ETH</option>
+      <option value="USDT">USDT</option>
+    </select>
+  </div>
+</div>
+
+{/* 快速选择金额 */}
+<div className="mb-6">
+  <label>快速选择</label>
+  <div className="grid grid-cols-3 gap-2">
+    {paymentCurrency === 'ETH' ? (
+      <>
+        <button onClick={() => setPaymentAmount('0.1')}>0.1 ETH</button>
+        <button onClick={() => setPaymentAmount('1')}>1 ETH</button>
+        <button onClick={() => setPaymentAmount('10')}>10 ETH</button>
+      </>
+    ) : (
+      <>
+        <button onClick={() => setPaymentAmount('10')}>10 USDT</button>
+        <button onClick={() => setPaymentAmount('100')}>100 USDT</button>
+        <button onClick={() => setPaymentAmount('1000')}>1000 USDT</button>
+      </>
+    )}
+  </div>
+</div>
+```
+
+### 修复效果
+- ✅ wish页面"下一步"按钮居中显示，界面更简洁
+- ✅ 钱包连接按钮支持点击退出登录，用户体验更好
+- ✅ calculate页面两个按钮并列显示，样式统一，无重叠
+- ✅ result页面香火支付界面整合，输入框和币种选择在同一行
+- ✅ 添加快速选择金额功能，支持ETH和USDT不同的预设金额
+- ✅ 切换币种时自动清空金额，避免混淆
+- ✅ 所有按钮样式统一，保持新中式美学风格
+
+## 🎯 最终布局优化：专业级用户体验
+
+### 问题描述
+用户要求进一步优化界面布局和钱包连接功能：
+
+1. **calculate.js页面布局**：
+   - 按钮需要垂直排列："开始算命"在上，"修改愿望"在下
+   - 两个按钮都要放在floating-card中，保持统一样式
+
+2. **result.js支付界面**：
+   - input和select需要更紧密整合
+   - 实现在一个输入框中，右侧显示币种选择
+
+3. **钱包连接功能升级**：
+   - 参考RainbowKit实现专业级钱包连接体验
+   - 添加下拉菜单显示"断开连接"选项
+   - 实现真正的钱包断开连接功能
+
+### 解决方案 ✅ 已完成
+
+#### 1. calculate.js按钮布局优化
+```javascript
+// 修复前 - 水平排列
+<div className="flex justify-center space-x-4">
+  <button onClick={handleModifyWish}>修改愿望</button>
+  <button onClick={handleCalculate}>开始算命</button>
+</div>
+
+// 修复后 - 垂直排列在floating-card中
+<div className="floating-card mb-8">
+  <div className="space-y-4">
+    <button
+      onClick={handleCalculate}
+      disabled={numbers.some(num => num === '')}
+      className="w-full ink-button disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      开始算命
+    </button>
+    <button
+      onClick={handleModifyWish}
+      className="w-full ink-button bg-transparent border-2 border-ink text-ink hover:bg-ink hover:text-white"
+    >
+      修改愿望
+    </button>
+  </div>
+</div>
+```
+
+#### 2. result.js支付界面整合
+```javascript
+// 修复前 - 分离的输入框和选择器
+<div className="flex space-x-2">
+  <input className="flex-1 ink-input font-kai" />
+  <select className="w-20 ink-input font-kai text-center" />
+</div>
+
+// 修复后 - 完全整合的输入界面
+<div className="relative">
+  <input
+    type="number"
+    min="0.0001"
+    value={paymentAmount}
+    onChange={(e) => setPaymentAmount(e.target.value)}
+    className="w-full ink-input font-kai pr-20"
+    placeholder="输入香火金额..."
+  />
+  <select
+    value={paymentCurrency}
+    onChange={(e) => {
+      setPaymentCurrency(e.target.value)
+      setPaymentAmount('') // 切换币种时清空金额
+    }}
+    className="absolute right-0 top-0 h-full w-16 bg-transparent border-0 font-kai text-center text-ink focus:outline-none focus:ring-0 cursor-pointer"
+  >
+    <option value="ETH">ETH</option>
+    <option value="USDT">USDT</option>
+  </select>
+</div>
+```
+
+#### 3. 专业级钱包连接功能（参考RainbowKit）
+```javascript
+// 修复后 - 专业级钱包连接体验
+{isConnected ? (
+  <div className="relative group">
+    <button className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-ink hover:shadow-ink-lg transition-all duration-300 font-kai text-ink">
+      <div className="flex items-center space-x-2">
+        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        <span className="text-sm">{formatAddress(walletAddress)}</span>
+        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </button>
+    
+    {/* 专业级下拉菜单 */}
+    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-ink/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+      <div className="p-2">
+        <div className="px-3 py-2 text-sm text-ink-light font-kai border-b border-ink/10">
+          {formatAddress(walletAddress)}
+        </div>
+        <button
+          onClick={async () => {
+            try {
+              // 真正的钱包断开连接
+              if (window.ethereum) {
+                await window.ethereum.request({
+                  method: 'wallet_revokePermissions',
+                  params: [{ eth_accounts: {} }]
+                }).catch(() => {
+                  // 如果不支持revokePermissions，则忽略错误
+                })
+              }
+              
+              // 清除所有本地状态
+              setIsConnected(false)
+              setWalletAddress('')
+              localStorage.removeItem('walletConnected')
+              localStorage.removeItem('walletAddress')
+              
+              // 刷新页面确保完全断开
+              window.location.reload()
+            } catch (error) {
+              console.error('断开钱包失败:', error)
+              // 即使出错也要清除本地状态
+              setIsConnected(false)
+              setWalletAddress('')
+              localStorage.removeItem('walletConnected')
+              localStorage.removeItem('walletAddress')
+            }
+          }}
+          className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded font-kai transition-colors duration-200"
+        >
+          断开连接
+        </button>
+      </div>
+    </div>
+  </div>
+) : (
+  <button onClick={connectWallet}>连接钱包</button>
+)}
+```
+
+### 修复效果
+- ✅ calculate页面按钮垂直排列，"开始算命"在上，"修改愿望"在下
+- ✅ 两个按钮都在floating-card中，保持统一的新中式美学
+- ✅ result页面支付界面完全整合，input和select在同一个容器中
+- ✅ 币种选择器覆盖在输入框右侧，节省空间且美观
+- ✅ 钱包连接功能升级为专业级体验，参考RainbowKit设计
+- ✅ 添加悬停下拉菜单，显示钱包地址和断开连接选项
+- ✅ 实现真正的钱包断开连接，调用wallet_revokePermissions API
+- ✅ 完善的错误处理和状态清除机制
+- ✅ 所有交互都有流畅的过渡动画，提升用户体验 
