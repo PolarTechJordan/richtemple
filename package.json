@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cloudflare": "node scripts/cloudflare-build.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next node_modules/.cache cache"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.8",

@@ -1,3 +1,5 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
 # Dependencies
 /node_modules
 /.pnp
@@ -75,8 +77,9 @@ pids
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
+.cache/
+cache/
+.parcel-cache/
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
@@ -113,4 +116,21 @@ pnpm-lock.yaml
 # Local development
 .vscode/settings.json
 .vscode/launch.json
-.vscode/extensions.json 
+.vscode/extensions.json
+
+# Cloudflare
+.wrangler/
+
+# Large files that might cause deployment issues
+*.zip
+*.tar.gz
+*.rar
+
+# Webpack cache (避免 Cloudflare Pages 25MB 限制)
+.next/cache/
+.next/static/webpack/
+node_modules/.cache/
+
+# 大型媒体文件备份
+*.backup
+public/videos/*.backup.mp4 
