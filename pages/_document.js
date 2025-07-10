@@ -9,6 +9,8 @@ export default function Document() {
         
         {/* 网站图标 */}
         <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/icon.png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
         
         {/* 预加载重要资源 */}
         <link rel="preload" href="/videos/1.mp4" as="video" type="video/mp4" />
