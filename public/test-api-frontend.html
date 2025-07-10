@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试API调用</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>测试 DeepSeek API 调用</h1>
+    
+    <button onclick="testDivination()">测试占卜API</button>
+    <button onclick="testDailyFortune()">测试每日运势API</button>
+    <button onclick="clearResults()">清除结果</button>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testDivination() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML += '<div class="result">🎯 发送占卜API请求...</div>';
+            
+            try {
+                const response = await fetch('/api/divination', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        wish: '测试愿望',
+                        numbers: [1, 2, 3]
+                    })
+                });
+                
+                console.log('占卜API响应状态:', response.status, response.statusText);
+                
+                const data = await response.json();
+                console.log('占卜API返回数据:', data);
+                
+                resultsDiv.innerHTML += `<div class="result">
+                    <h3>占卜API响应 (状态: ${response.status})</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+                
+            } catch (error) {
+                console.error('占卜API调用失败:', error);
+                resultsDiv.innerHTML += `<div class="result">
+                    <h3>❌ 占卜API调用失败</h3>
+                    <p>错误: ${error.message}</p>
+                </div>`;
+            }
+        }
+        
+        async function testDailyFortune() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML += '<div class="result">🎯 发送每日运势API请求...</div>';
+            
+            try {
+                const response = await fetch('/api/daily-fortune');
+                
+                console.log('每日运势API响应状态:', response.status, response.statusText);
+                
+                const data = await response.json();
+                console.log('每日运势API返回数据:', data);
+                
+                resultsDiv.innerHTML += `<div class="result">
+                    <h3>每日运势API响应 (状态: ${response.status})</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+                
+            } catch (error) {
+                console.error('每日运势API调用失败:', error);
+                resultsDiv.innerHTML += `<div class="result">
+                    <h3>❌ 每日运势API调用失败</h3>
+                    <p>错误: ${error.message}</p>
+                </div>`;
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+    </script>
+</body>
+</html> 

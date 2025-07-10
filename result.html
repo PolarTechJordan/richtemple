@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神算结果</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #fdfaf4; /* 类似羊皮纸的背景色 */
+            font-family: 'Noto Serif SC', serif;
+            color: #3a3a3a;
+        }
+
+        .container {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px 20px 40px 150px; /* 为左侧背景图留出空间 */
+            overflow: hidden; 
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.2em;
+            font-weight: 700;
+            color: #2c2c2c;
+            margin-bottom: 80px;
+            letter-spacing: 0.1em;
+        }
+
+        .section {
+            display: flex;
+            margin-bottom: 80px; /* 增加了区块间的垂直间距 */
+            align-items: flex-start; 
+            max-width: 80%; /* 限制每个区块的最大宽度 */
+        }
+
+        /* 控制区块的左右对齐 */
+        .section-right {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        .section-left {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .vertical-title {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 2em;
+            font-weight: 700;
+            color: #a13333; /* 标题颜色改为暗红色 */
+            margin-right: 40px;
+            letter-spacing: 0.5em; 
+            padding-top: 10px;
+            white-space: nowrap; 
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+            font-size: 1.05em;
+            line-height: 2.1;
+            /* 添加左侧分割线 */
+            border-left: 1px solid #d1c9bd; 
+            padding-left: 40px; /* 为分割线留出空间 */
+        }
+
+        .content p {
+            margin: 0 0 1.5em 0;
+            text-align: justify;
+        }
+        
+        .content .indent {
+            text-indent: 2.1em;
+        }
+
+        /* 最后一个section不需要底部边距 */
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="background-decoration"></div>
+        <div class="main-content">
+            <h1>神算结果</h1>
+
+            <!-- 第一个区块，靠右对齐 -->
+            <div class="section section-right">
+                <div class="vertical-title">五行生克分析</div>
+                <div class="content">
+                    <p>根据您提供的数据，我们建立代表此事的“人”、“事”、“应”三个宫位：【人宫】(您自己)：【速喜】，五行属火；【事宫】(事情本身)：【速喜】，五行属火；【应宫】(最终结果)：【小吉】，五行属水。</p>
+                    <p><strong>您与事情的关系：</strong><br>
+                        【人宫-速喜-火】与【事宫-速喜-火】的关系是火与火比和。<br>
+                        这是“人与事同宫”的格局。这说明您对此事的态度和这件事本身的性质是完全一致的。【速喜】代表着急切、快速、喜讯，也带有口舌之象。这表明您现在内心非常焦急，希望能立刻、马上把钱要回来，并且在这个过程中很可能已经或将要发生激烈的言语交锋。</p>
+                    <p><strong>您与结果的关系 (人 vs 应)：</strong><br>
+                        【人宫-速喜-火】与【应宫-小吉-水】的关系是水克火。<br>
+                        这是“应克人”的格局，也是本次占算中最关键和最不利的信号。代表最终结果的【应宫】(水)克制着代表您的【人宫】(火)。这预示着最终的结果将会让您感到巨大的失望和压制，您的希望和努力(火)会被这个结果(水)无情地“浇灭”。</p>
+                    <p><strong>事情与结果的关系 (事 vs 应)：</strong><br>
+                        【事宫-速喜-火】与【应宫-小吉-水】的关系是水克火。<br>
+                        这是“应克事”的格局。这同样说明，最终的结果(小吉水)是克制这件事(速喜火)的。也就是说，您所期望的“快速、圆满地解决”这件事，其发展趋势会被最终的结果所阻碍和扑灭。事情无法按照您所期望的火热、迅速的方式发展。</p>
+                </div>
+            </div>
+
+            <!-- 第二个区块，靠左对齐 -->
+            <div class="section section-left">
+                <div class="vertical-title">综合运势判断</div>
+                <div class="content">
+                    <p><strong>结论：这个月钱能要回来的可能性极低。</strong><br>
+                        这是一个非常清晰的“希望被现实浇灭”的卦象。</p>
+                    <p><strong>【速喜】</strong>虽然人和事都充满了“速喜”的能量，急切地盼望一个好结果，但代表最终走向的“应宫”却用其“水”的属性，无情地克制了这一切“火”的能量。</p>
+                    <p><strong>【小吉】</strong>虽然最终结果带“吉”，但水属性扮演着“克制者”的角色。最终或许会有一些微小的转机或谈判的可能，但它绝对无法满足您“快速全额要回”的期望，或接受一个远低于预期的微小补偿，而非真正的喜事。</p>
+                </div>
+            </div>
+
+            <!-- 第三个区块，靠右对齐 -->
+            <div class="section section-right">
+                <div class="vertical-title">实用建议</div>
+                <div class="content">
+                    <p><strong>立刻调整心态:</strong>请放弃“这个月就能顺利要回”的幻想。卦象显示结果与您的期望完全相反，及早接受现实能避免更大的情绪内耗。</p>
+                    <p><strong>避免火上浇油：</strong>您和事情都属“火”，再采取激烈的争吵或冲突手段，只会被结果的“水”克制得更厉害。建议从急躁的对抗模式，转变为冷静、理性的取证和沟通模式。</p>
+                    <p><strong>💡 神明指引：</strong>您可以尝试寻找和解、谈判或第三方调解的可能性，争取拿到哪怕是一小部分的补偿。 您的性格稳重，建议多行善事，诚心祈福，终将会有好的结果期待。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
