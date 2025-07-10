@@ -5,7 +5,7 @@ const nextConfig = {
   
   // Cloudflare Pages 优化
   trailingSlash: true,
-  output: 'standalone', // 优化输出大小
+  output: 'export', // 静态导出，适合 Cloudflare Pages
   
   // 禁用缓存以避免大文件
   webpack: (config, { dev, isServer }) => {
