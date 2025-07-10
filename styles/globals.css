@@ -167,6 +167,101 @@ body {
   .animate-modalFadeIn {
     animation: modalFadeIn 0.3s ease-out forwards;
   }
+
+  /* 装饰图片基础样式 */
+  .decoration-img {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+  }
+
+  /* 左上角装饰 */
+  .decoration-left-top {
+    top: 2%;
+    left: 1%;
+    width: clamp(60px, 10vw, 100px);
+    height: auto;
+  }
+
+  /* 左下角装饰 */
+  .decoration-left-btm {
+    bottom: 1px;
+    left: 0px;
+    width: clamp(120px, 20vw, 250px);
+    height: auto;
+  }
+
+  /* 右上角装饰 */
+  .decoration-right-top {
+    top: 30px;
+    right: calc(20px + 2rem + 9vw);
+    width: clamp(80px, 15vw, 150px);
+    height: auto;
+    z-index: 999;
+  }
+
+  /* 中间左侧装饰 */
+  .decoration-mid-left {
+    top: 88%;
+    left: 30%;
+    transform: translateY(-50%) scale(2);
+    width: clamp(100px, 18vw, 200px);
+    height: auto;
+  }
+
+  /* 中间装饰 */
+  .decoration-mid {
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%) scale(3);
+    width: clamp(60px, 12vw, 120px);
+    height: auto;
+  }
+
+  /* 中间右侧装饰 */
+  .decoration-mid-right {
+    top: 88%;
+    right: 20%;
+    transform: translateY(-50%) scale(2);
+    width: clamp(100px, 18vw, 200px);
+    height: auto;
+  }
+
+  /* 左中下角装饰 */
+  .decoration-mid-btm {
+    bottom: 3%;
+    left: 15%;
+    transform: translateY(-50%) scale(2);
+    width: clamp(100px, 18vw, 200px);
+    height: auto;
+  }
+
+  /* 右下角装饰 */
+  .decoration-right-btm {
+    bottom: 3%;
+    right: 20%;
+    transform: translateY(-50%) scale(2);
+    width: clamp(100px, 18vw, 200px);
+    height: auto;
+  }
+
+  /* 中间分隔装饰 */
+  .section-divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1.5rem 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .decoration-mid-divider {
+    transform: translateY(-50%) scale(1.5);
+    width: clamp(60px, 10vw, 100px);
+    height: auto;
+    opacity: 0.8;
+  }
 }
 
 /* 自定义动画 */
@@ -239,6 +334,51 @@ body {
   
   .responsive-text {
     font-size: clamp(0.875rem, 3vw, 1.125rem);
+  }
+
+  /* 移动端装饰图片调整 */
+  .decoration-left-top {
+    width: clamp(45px, 8vw, 70px);
+  }
+
+  .decoration-left-btm {
+    width: clamp(80px, 16vw, 150px);
+  }
+
+  .decoration-right-top {
+    width: clamp(60px, 12vw, 100px);
+    top: 10px;
+    right: calc(10px + 2rem + 5vw);
+  }
+
+  .decoration-mid-left {
+    width: clamp(70px, 14vw, 120px);
+  }
+
+  .decoration-mid {
+    width: clamp(40px, 8vw, 80px);
+    top: 15%;
+  }
+
+  .decoration-mid-right {
+    width: clamp(70px, 14vw, 120px);
+  }
+
+  /* calculate页面装饰图片移动端调整 */
+  .decoration-mid-btm {
+    width: clamp(70px, 14vw, 120px);
+  }
+
+  .decoration-right-btm {
+    width: clamp(70px, 14vw, 120px);
+  }
+
+  .decoration-mid-divider {
+    width: clamp(45px, 8vw, 75px);
+  }
+  
+  .section-divider {
+    margin: 1rem 0;
   }
 }
 

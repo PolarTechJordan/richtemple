@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import FloatingSidebar from '../components/FloatingSidebar'
+import ClientOnlyWalletConnect from '../components/ClientOnlyWalletConnect'
 import deepseekService from '../services/deepseekService'
 
 export default function MeritPage() {
@@ -72,9 +73,6 @@ export default function MeritPage() {
         return (
           <div className="text-center">
             <div className="mb-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-gold-temple to-red-temple rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-4xl">🙏</span>
-              </div>
               <h2 className="text-3xl font-kai text-ink mb-4">
                 上香成功
               </h2>
@@ -86,9 +84,9 @@ export default function MeritPage() {
             <div className="max-w-md mx-auto space-y-4">
               <button
                 onClick={handleTwitterShare}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-kai py-3 px-6 rounded-lg transition-colors duration-300"
+                className="w-full ink-button duration-300"
               >
-                分享至 Twitter
+                分享至...
               </button>
               <button
                 onClick={handlePrayAgain}
@@ -98,13 +96,6 @@ export default function MeritPage() {
               </button>
             </div>
 
-            <div className="mt-12 text-center">
-              <div className="inline-flex items-center space-x-4 text-ink-lighter">
-                <div className="w-12 h-px bg-ink-lighter"></div>
-                <span className="font-kai text-sm">功德无量</span>
-                <div className="w-12 h-px bg-ink-lighter"></div>
-              </div>
-            </div>
           </div>
         )
 
@@ -235,6 +226,16 @@ export default function MeritPage() {
       </Head>
 
       <div className="min-h-screen bg-rice ink-wash-bg cloud-pattern">
+        {/* 装饰图片 */}
+        {/* 左下角装饰 */}
+        {/* <img src="/assets/images/p2/p2_left_btm.png" alt="" className="decoration-img decoration-left-btm" /> */}
+        
+        {/* 右上角装饰和钱包连接按钮 */}
+        <img src="/assets/images/p2/p2_right_top.png" alt="" className="decoration-img decoration-right-top" />
+        <div className="absolute top-4 right-4 z-10">
+          <ClientOnlyWalletConnect />
+        </div>
+
         {/* 浮动侧边栏 */}
         <FloatingSidebar 
           isVisible={true} 
@@ -242,7 +243,7 @@ export default function MeritPage() {
         />
 
         {/* 主内容区 */}
-        <main className="ml-0 md:ml-64 min-h-screen p-4 md:p-8">
+        <main className="ml-64 min-h-screen p-4 md:p-8">
           <div className="max-w-4xl mx-auto">
             {renderContent()}
           </div>

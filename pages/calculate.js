@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import ClientOnlyWalletConnect from '../components/ClientOnlyWalletConnect'
 
 export default function CalculatePage() {
   const [wish, setWish] = useState('')
@@ -92,33 +93,52 @@ export default function CalculatePage() {
       </Head>
 
       <div className="min-h-screen bg-rice ink-wash-bg cloud-pattern">
+        {/* 装饰图片 */}
+        {/* 左上角装饰 */}
+        <img src="/assets/images/p2/p2_left_top.png" alt="" className="decoration-img decoration-left-top" />
+        
+        {/* 左下角装饰 */}
+        <img src="/assets/images/p2/p2_left_btm.png" alt="" className="decoration-img decoration-left-btm scale-75 origin-bottom-left" />
+
+        {/* 左中下角装饰 */}
+        <img src="/assets/images/p2/p2_mid_btm.png" alt="" className="decoration-img decoration-mid-btm" />
+        
+        {/* 右下角装饰 */}
+        <img src="/assets/images/p2/p2_right_btm.png" alt="" className="decoration-img decoration-right-btm" />
+
+        {/* 右上角装饰和钱包连接按钮 */}
+        <img src="/assets/images/p2/p2_right_top.png" alt="" className="decoration-img decoration-right-top" />
+        <div className="absolute top-4 right-4 z-10">
+          <ClientOnlyWalletConnect />
+        </div>
+
         <div className="container mx-auto px-4 py-8 md:py-16">
 
           {/* 主内容区 */}
           <main className="max-w-2xl mx-auto">
-            {/* 显示用户愿望 */}
-            <div className="floating-card mb-8">
-              {/* <h2 className="text-xl font-kai text-ink mb-4">您的心愿</h2> */}
-              <div className="bg-ink/5 rounded-lg p-4 border-l-4 border-red-temple">
-                <p className="text-ink font-kai leading-relaxed">
-                  我的愿望是：{wish}
+            {/* 显示用户愿望 - 居中放大 */}
+            <div className="text-center mb-8">
+              <div className="bg-ink/5 rounded-lg p-6 mx-auto max-w-xl">
+                <p className="text-ink font-kai leading-relaxed text-lg md:text-xl font-medium">
+                  {wish}
                 </p>
               </div>
             </div>
 
+            {/* 中间装饰图片 */}
+            <div className="text-center mb-8">
+              <img src="/assets/images/p2/p2_mid.png" alt="" className="inline-block " />
+            </div>
+
             {/* 数字输入区 */}
             <div className="floating-card mb-8">
-              <h2 className="text-xl font-kai text-ink mb-6">神选数字</h2>
-              <p className="text-ink-light font-kai mb-6">
-                请凭直觉输入3个1-99之间的数字，神明将根据这些数字为您占卜
+              <p className="text-ink-light font-kai mb-6 text-center">
+                请凭直觉输入3个1-99之间的数字，神明将根据这些数字为您指点迷津
               </p>
               
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {numbers.map((number, index) => (
                   <div key={index} className="text-center">
-                    <label className="block text-ink-light font-kai mb-2">
-                      第{index + 1}个数字
-                    </label>
                     <input
                       type="number"
                       min="1"
@@ -132,44 +152,32 @@ export default function CalculatePage() {
                 ))}
               </div>
 
-              <div className="text-center text-sm text-ink-lighter font-kai">
-                请输入您心中所想的数字，让神明感受您的诚意
-              </div>
             </div>
 
             {/* 操作按钮区域 */}
-            <div className="floating-card mb-8">
-              <div className="space-y-4">
-                <button
-                  onClick={handleCalculate}
-                  disabled={numbers.some(num => num === '')}
-                  className="w-full ink-button disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  开始算命
-                </button>
-                <button
-                  onClick={handleModifyWish}
-                  className="w-full ink-button bg-transparent border-2 border-ink text-ink hover:bg-ink hover:text-white"
-                >
-                  修改愿望
-                </button>
-              </div>
+            <div className="flex justify-center items-center mb-4">
+              <button
+                onClick={handleCalculate}
+                disabled={numbers.some(num => num === '')}
+                className="ink-button disabled:opacity-50 disabled:cursor-not-allowed w-40"
+              >
+                下一步
+              </button>
+            </div>
+            
+            <div className="flex justify-center items-center mb-8">
+              <button
+                onClick={handleModifyWish}
+                className="ink-button bg-transparent border-ink text-ink hover:bg-ink hover:text-white w-40"
+              >
+                修改愿望
+              </button>
             </div>
 
-            {/* 装饰元素 */}
-            <div className="mt-12 text-center">
-              <div className="inline-flex items-center space-x-4 text-ink-lighter">
-                <div className="w-12 h-px bg-ink-lighter"></div>
-                <span className="font-kai text-sm">天机不可泄露</span>
-                <div className="w-12 h-px bg-ink-lighter"></div>
-              </div>
-            </div>
           </main>
         </div>
 
-        {/* 底部装饰 */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-ink/5 to-transparent pointer-events-none"></div>
-      </div>
+       </div>
     </>
   )
 } 

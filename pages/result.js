@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useAccount } from 'wagmi'
+import ClientOnlyWalletConnect from '../components/ClientOnlyWalletConnect'
 import deepseekService from '../services/deepseekService'
 
 export default function ResultPage() {
@@ -106,17 +107,25 @@ export default function ResultPage() {
       </Head>
 
       <div className="min-h-screen bg-rice ink-wash-bg cloud-pattern">
+        {/* 装饰图片 */}
+        {/* 左上角装饰 */}
+        <img src="/assets/images/p2/p2_left_top.png" alt="" className="decoration-img decoration-left-top" />
+        
+        {/* 左下角装饰 - 固定在页面左下角 */}
+        <img src="/assets/images/p2/p2_left_btm.png" alt="" className="fixed bottom-0 left-0 z-0 pointer-events-none scale-75 origin-bottom-left object-contain opacity-60" />
+        
+        {/* 右上角装饰和钱包连接按钮 */}
+        <img src="/assets/images/p2/p2_right_top.png" alt="" className="decoration-img decoration-right-top" />
+        <div className="absolute top-4 right-4 z-10">
+          <ClientOnlyWalletConnect />
+        </div>
+
         <div className="container mx-auto px-4 py-8 md:py-16">
           {/* 页面头部 */}
           <header className="text-center mb-12">
             <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
-              六神已定，虔诚上香，神明护佑
+            &#8203;
             </h1>
-            <div className="flex justify-center items-center space-x-4 text-ink-lighter">
-              <div className="w-12 h-px bg-ink-lighter"></div>
-              <span className="font-kai text-sm">天机已现</span>
-              <div className="w-12 h-px bg-ink-lighter"></div>
-            </div>
           </header>
 
           {/* 占卜结果区域 */}
@@ -292,8 +301,6 @@ export default function ResultPage() {
           </main>
         </div>
 
-        {/* 底部装饰 */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-ink/5 to-transparent pointer-events-none"></div>
       </div>
     </>
   )
