@@ -65,10 +65,7 @@ const nextConfig = {
   // 页面扩展名
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   
-  // 实验性功能
-  experimental: {
-    appDir: false, // 使用传统的pages目录
-  },
+  // 实验性功能 - Next.js 14 中不再需要 appDir 配置
 
   // 压缩配置
   compress: true,
