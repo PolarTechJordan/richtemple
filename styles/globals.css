@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局样式重置 */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: #2C2C2C;
+  background: #F2DEB0;
+  font-family: 'KaiTi', 'STKaiti', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(245, 241, 232, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(74, 74, 74, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(44, 44, 44, 0.7);
+}
+
+/* 新中式美学组件样式 */
+@layer components {
+  /* 水墨按钮 */
+  .ink-button {
+    @apply relative overflow-hidden transition-all duration-300 ease-in-out;
+    @apply bg-ink/70 text-white font-kai text-lg px-8 py-3 rounded;
+    @apply hover:bg-red-temple/80 active:bg-ink;
+    @apply shadow-ink hover:shadow-ink-lg;
+  }
+  
+  .ink-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: all 0.6s ease;
+  }
+  
+  .ink-button:hover::before {
+    left: 100%;
+  }
+  
+  /* 水墨输入框 */
+  .ink-input {
+    @apply border border-ink/30 rounded px-4 py-3 text-ink resize-none;
+    @apply focus:outline-none focus:border-ink/60 focus:shadow-ink;
+    @apply transition-all duration-300 bg-white/90 backdrop-blur-sm;
+  }
+  
+  .ink-input:focus {
+    box-shadow: 0 0 8px rgba(44, 44, 44, 0.2);
+  }
+  
+  /* 涟漪效果 */
+  .ripple-container {
+    @apply relative overflow-hidden cursor-pointer;
+  }
+  
+  .ripple {
+    @apply absolute rounded-full bg-white/30 pointer-events-none;
+    animation: ripple 1.5s ease-out;
+  }
+  
+  /* 浮动卡片 */
+  .floating-card {
+    @apply bg-white/70 backdrop-blur-sm rounded-lg shadow-ink;
+    @apply border border-ink/10 p-6 md:p-8;
+    @apply hover:shadow-ink-lg transition-all duration-300;
+  }
+  
+  /* 水墨背景 */
+  .ink-wash-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 L100,0 L100,100 L0,100 Z' fill='none' stroke='%23E0D9CC' stroke-width='0.25'/%3E%3C/svg%3E");
+    background-size: 50px 50px;
+  }
+  
+  /* 云纹装饰 */
+  .cloud-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%232C2C2C' opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 60px;
+  }
+  
+  /* 毛笔边框 */
+  .brush-border {
+    @apply relative;
+  }
+  
+  .brush-border::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #2C2C2C, transparent);
+  }
+  
+  /* 侧边栏 */
+  .sidebar {
+    @apply fixed left-0 top-0 h-full w-64 bg-white/90 backdrop-blur-sm;
+    @apply shadow-ink-lg border-r border-ink/10 z-50;
+    @apply transform transition-transform duration-300 ease-in-out;
+  }
+  
+  .sidebar.hidden {
+    @apply -translate-x-full;
+  }
+  
+  .sidebar-item {
+    @apply block w-full px-6 py-4 text-left text-ink hover:bg-ink/5;
+    @apply transition-colors duration-200 font-kai text-lg;
+    @apply border-b border-ink/10 last:border-b-0;
+  }
+  
+  .sidebar-item:hover {
+    @apply bg-ink/5 text-red-temple;
+  }
+  
+  /* 视频容器 */
+  .video-container {
+    @apply relative w-full h-screen overflow-hidden;
+  }
+  
+  .video-container video {
+    @apply w-full h-full object-cover;
+  }
+  
+  /* 响应式文本 */
+  .responsive-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+  
+  .responsive-text {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+  }
+}
+
+/* 自定义动画 */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes inkSpread {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .sidebar {
+    @apply w-full;
+  }
+  
+  .floating-card {
+    @apply p-4;
+  }
+  
+  .ink-button {
+    @apply px-6 py-2 text-base;
+  }
+  
+  .responsive-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+  
+  .responsive-text {
+    font-size: clamp(0.875rem, 3vw, 1.125rem);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .sidebar,
+  .ink-button,
+  .ripple-container {
+    display: none !important;
+  }
+} 
