@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
 export default function FloatingSidebar({ isVisible = true, onNavigate }) {
   const [isOpen, setIsOpen] = useState(isVisible)
-  const [hovering, setHovering] = useState(false)
+  const hoveringRef = useRef(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -12,16 +12,16 @@ export default function FloatingSidebar({ isVisible = true, onNavigate }) {
 
   const handleMouseEnter = () => {
     if (!isVisible) {
-      setHovering(true)
+      hoveringRef.current = true
       setIsOpen(true)
     }
   }
 
   const handleMouseLeave = () => {
     if (!isVisible) {
-      setHovering(false)
+      hoveringRef.current = false
       setTimeout(() => {
-        if (!hovering) {
+        if (!hoveringRef.current) {
           setIsOpen(false)
         }
       }, 300)
@@ -30,7 +30,7 @@ export default function FloatingSidebar({ isVisible = true, onNavigate }) {
 
   const handleNavigation = (path, section = null) => {
     if (onNavigate) {
-      onNavigate(section)
+      onNavigate(section || path.replace('/', ''))
     } else {
       router.push(path)
     }
@@ -41,7 +41,7 @@ export default function FloatingSidebar({ isVisible = true, onNavigate }) {
       id: 'wish',
       label: '祈愿上香',
       icon: '🙏',
-      action: () => handleNavigation('/wish')
+      action: () => handleNavigation('/wish', 'wish')
     },
     {
       id: 'fortune',
@@ -53,7 +53,7 @@ export default function FloatingSidebar({ isVisible = true, onNavigate }) {
       id: 'store',
       label: '法物流通',
       icon: '🏪',
-      action: () => handleNavigation('/merit', 'store')
+      action: () => handleNavigation('/store', 'store')
     },
     {
       id: 'contact',
@@ -82,7 +82,7 @@ export default function FloatingSidebar({ isVisible = true, onNavigate }) {
         {/* 头部 */}
         <div className="p-6 border-b border-ink/10">
           <h2 className="text-xl font-kai text-ink text-center">
-            财神庙
+            财神殿
           </h2>
           <p className="text-sm text-ink-lighter font-kai text-center mt-2">
             Rich Temple

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import FloatingSidebar from '../components/FloatingSidebar'
+import { checkWalletConnection, connectWallet as connectWalletUtil, formatAddress } from '../utils/walletUtils'
 
 export default function WishPage() {
   const [wish, setWish] = useState('')
@@ -10,32 +12,31 @@ export default function WishPage() {
 
   useEffect(() => {
     // 检查是否已连接钱包
-    if (typeof window !== 'undefined' && window.ethereum) {
-      window.ethereum.request({ method: 'eth_accounts' })
-        .then(accounts => {
-          if (accounts.length > 0) {
-            setIsConnected(true)
-            setWalletAddress(accounts[0])
-          }
-        })
-        .catch(console.error)
+    const checkConnection = async () => {
+      try {
+        const { connected, accounts } = await checkWalletConnection()
+        if (connected && accounts.length > 0) {
+          setIsConnected(true)
+          setWalletAddress(accounts[0])
+        }
+      } catch (error) {
+        console.error('检查钱包连接失败:', error)
+      }
     }
+    
+    checkConnection()
   }, [])
 
   const connectWallet = async () => {
-    if (typeof window !== 'undefined' && window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ 
-          method: 'eth_requestAccounts' 
-        })
+    try {
+      const result = await connectWalletUtil()
+      if (result.success) {
         setIsConnected(true)
-        setWalletAddress(accounts[0])
-      } catch (error) {
-        console.error('连接钱包失败:', error)
-        alert('连接钱包失败，请重试')
+        setWalletAddress(result.address)
       }
-    } else {
-      alert('请安装MetaMask钱包')
+    } catch (error) {
+      console.error('连接钱包失败:', error)
+      alert(error.message || '连接钱包失败，请重试')
     }
   }
 
@@ -57,19 +58,40 @@ export default function WishPage() {
     router.push('/calculate')
   }
 
-  const formatAddress = (address) => {
-    if (!address) return ''
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+
+
+  const handleSidebarNavigate = (section) => {
+    if (section === 'wish') {
+      // 当前已在wish页面，无需跳转
+      return
+    }
+    
+    if (section === 'store') {
+      // 跳转到store页面
+      router.push('/store')
+    } else if (section === 'fortune' || section === 'contact') {
+      // 跳转到merit页面并显示对应section
+      router.push(`/merit?section=${section}`)
+    } else {
+      // 默认跳转到merit页面
+      router.push('/merit')
+    }
   }
 
   return (
     <>
       <Head>
         <title>许愿池 - Rich Temple</title>
-        <meta name="description" content="在财神庙许下您的心愿" />
+        <meta name="description" content="在财神殿许下您的心愿" />
       </Head>
 
       <div className="min-h-screen bg-rice ink-wash-bg cloud-pattern">
+        {/* 浮动侧边栏 */}
+        <FloatingSidebar 
+          isVisible={false} 
+          onNavigate={handleSidebarNavigate}
+        />
+
         {/* 钱包连接按钮 */}
         <div className="absolute top-4 right-4 z-10">
           {isConnected ? (

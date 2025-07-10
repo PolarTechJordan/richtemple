@@ -51,8 +51,8 @@ export default function InitialPage() {
   return (
     <>
       <Head>
-        <title>Rich Temple - 财神庙</title>
-        <meta name="description" content="财神庙 Web3 祈福上香平台" />
+        <title>Rich Temple - 财神殿</title>
+        <meta name="description" content="财神殿 Web3 祈福上香平台" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -94,7 +94,7 @@ export default function InitialPage() {
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <div className="text-center animate-fade-in">
               <h1 className="responsive-title font-kai text-white mb-8 text-shadow-lg">
-                财神庙
+                财神殿
               </h1>
               <p className="responsive-text text-white/90 mb-12 font-kai">
                 诚心祈福，神明护佑

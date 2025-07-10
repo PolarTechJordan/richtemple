@@ -1,7 +1,7 @@
 {
   "name": "rich-temple",
   "version": "1.0.0",
-  "description": "财神庙 Web3 祈福上香平台",
+  "description": "财神殿 Web3 祈福上香平台",
   "private": true,
   "scripts": {
     "dev": "next dev",

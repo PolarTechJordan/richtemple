@@ -17,9 +17,25 @@ export default function MeritPage() {
       router.push('/wish')
       return
     }
-  }, [router])
+    
+    // 检查URL参数，自动切换到对应section
+    const { section } = router.query
+    if (section && ['fortune', 'contact', 'store'].includes(section)) {
+      setCurrentSection(section)
+      // 如果是fortune section，自动加载每日运势
+      if (section === 'fortune' && !dailyFortune) {
+        handleSectionChange('fortune')
+      }
+    }
+  }, [router, dailyFortune])
 
   const handleSectionChange = async (section) => {
+    // 如果点击"祈愿上香"，直接跳转到wish页面
+    if (section === 'wish') {
+      router.push('/wish')
+      return
+    }
+    
     if (section === 'fortune' && !dailyFortune) {
       setLoadingFortune(true)
       try {
@@ -36,7 +52,7 @@ export default function MeritPage() {
   }
 
   const handleTwitterShare = () => {
-    const text = encodeURIComponent('我在财神庙完成了祈福上香，愿望已传达至神明！🙏 #RichTemple #财神庙 #Web3祈福')
+    const text = encodeURIComponent('我在财神殿完成了祈福上香，愿望已传达至神明！🙏 #RichTemple #财神殿 #Web3祈福')
     const url = encodeURIComponent(window.location.origin)
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank')
   }

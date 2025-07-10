@@ -75,7 +75,14 @@ export default function StorePage() {
   const handleSidebarNavigate = (section) => {
     if (section === 'wish') {
       router.push('/wish')
+    } else if (section === 'store') {
+      // 当前已在store页面，无需跳转
+      return
+    } else if (section === 'fortune' || section === 'contact') {
+      // 跳转到merit页面并显示对应section
+      router.push(`/merit?section=${section}`)
     } else {
+      // 默认跳转到merit页面
       router.push('/merit')
     }
   }

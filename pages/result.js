@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import deepseekService from '../services/deepseekService'
+import { checkWalletConnection } from '../utils/walletUtils'
 
 export default function ResultPage() {
   const [wish, setWish] = useState('')
@@ -60,13 +61,8 @@ export default function ResultPage() {
 
     try {
       // 检查钱包连接
-      if (!window.ethereum) {
-        alert('请安装MetaMask钱包')
-        return
-      }
-
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' })
-      if (accounts.length === 0) {
+      const { connected, accounts } = await checkWalletConnection()
+      if (!connected || accounts.length === 0) {
         alert('请先连接钱包')
         return
       }
