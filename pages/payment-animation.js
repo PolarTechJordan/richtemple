@@ -61,6 +61,7 @@ export default function PaymentAnimationPage() {
           autoPlay
           muted
           playsInline
+          loop
           onEnded={handleAnimationEnd}
         >
           <source src="/videos/3.mp4" type="video/mp4" />

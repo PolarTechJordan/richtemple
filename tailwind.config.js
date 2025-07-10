@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         // 新中式配色方案
-        rice: '#F2DEB0', // 宣纸色（浅米色/米白色）
+        rice: '#F9F4E2', // 宣纸色（浅米色/米白色）
         ink: '#2C2C2C',  // 墨色（深灰色）
         'ink-light': '#4A4A4A', // 浅墨色
         'ink-lighter': '#6B6B6B', // 更浅的墨色

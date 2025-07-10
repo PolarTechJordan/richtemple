@@ -43,15 +43,23 @@ export default function CalculatePage() {
       // 存储数字到localStorage
       localStorage.setItem('divinationNumbers', JSON.stringify(numbers.map(num => parseInt(num))))
       
-      // 模拟加载2.mp4动画的时间
-      setTimeout(() => {
-        router.push('/result')
-      }, 3000)
+      // 启动DeepSeek API调用并等待结果
+      const deepseekService = (await import('../services/deepseekService')).default
+      const result = await deepseekService.performDivination(
+        wish, 
+        numbers.map(num => parseInt(num))
+      )
+      
+      // 存储占卜结果
+      localStorage.setItem('divinationResult', JSON.stringify(result))
+      
+      // 跳转到结果页面
+      router.push('/result')
       
     } catch (error) {
       console.error('算命失败:', error)
-      alert('算命失败，请重试')
-      setIsLoading(false)
+      // 即使失败也跳转，在result页面会使用默认结果
+      router.push('/result')
     }
   }
 
@@ -61,24 +69,30 @@ export default function CalculatePage() {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-ink flex items-center justify-center z-50">
-        <div className="text-center">
-          <video
-            className="w-full max-w-md mx-auto mb-8"
-            autoPlay
-            muted
-            playsInline
-            loop
-          >
-            <source src="/videos/2.mp4" type="video/mp4" />
-          </video>
-          <div className="text-white font-kai text-xl mb-4">
-            神明正在计算您的运势...
-          </div>
-          <div className="flex justify-center space-x-2">
-            <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+      <div className="fixed inset-0 bg-black z-50">
+        {/* 全屏播放 2.mp4 视频 */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          playsInline
+          loop
+        >
+          <source src="/videos/2.mp4" type="video/mp4" />
+          您的浏览器不支持视频播放
+        </video>
+        
+        {/* 加载提示覆盖层 */}
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-white font-kai text-xl mb-4 drop-shadow-lg">
+              神明正在计算您的运势...
+            </div>
+            <div className="flex justify-center space-x-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce drop-shadow-lg"></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce drop-shadow-lg" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce drop-shadow-lg" style={{ animationDelay: '0.2s' }}></div>
+            </div>
           </div>
         </div>
       </div>

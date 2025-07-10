@@ -153,45 +153,130 @@ class DeepSeekService {
   }
 
   // 获取每日运势
-  async getDailyFortune() {
+  async getDailyFortune(date = null) {
     try {
-      const today = new Date()
-      const prompt = `请根据今天的日期（${today.toLocaleDateString('zh-CN')}）和农历信息，为用户提供今日运势分析。包括：
-      1. 今日总体运势
-      2. 财运分析
-      3. 事业运势
-      4. 健康提醒
-      5. 开运建议
+      // 使用传入的日期或当前日期
+      const targetDate = date ? new Date(date) : new Date()
+      const dateString = targetDate.toLocaleDateString('zh-CN')
       
-      请用传统的中式语言风格回答。`
+      // 获取农历日期
+      const { Lunar } = await import('lunar-javascript')
+      const lunar = Lunar.fromDate(targetDate)
+      const lunarDate = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`
+      
+      const prompt = `请根据今天的日期生成当日的运势情况。今天是${dateString}，农历${lunarDate}。
+
+请基于传统的中华民俗文化和五行理论，生成今日运势报告，包含以下方面：
+1. 总体运势评级（1-5星）
+2. 财运分析
+3. 事业运势
+4. 感情运势
+5. 健康运势
+6. 今日建议
+7. 幸运数字
+8. 幸运颜色
+9. 宜做的事情
+10. 忌做的事情
+
+请严格按照以下格式输出：
+
+黄道吉日
+${dateString}
+${lunarDate} [吉/平/凶]
+宜 [具体事项，用空格分隔]
+忌 [具体事项，用空格分隔]
+
+财运★★★★★
+[财运分析内容]
+
+事业★★★★☆
+[事业运势内容]
+
+感情★★★★☆
+[感情运势内容]
+
+健康★★★★★
+[健康运势内容]
+
+今日建议
+[具体建议内容]
+
+今日幸运
+幸运颜色: [颜色]
+幸运数字: [数字1], [数字2], [数字3]
+幸运方位: [方位]
+吉时: [时间段]
+
+请用传统的中式语言风格，保持庄重和神秘感。`
 
       const response = await this.client.post('/chat/completions', {
         model: 'deepseek-chat',
         messages: [
           {
             role: 'system',
-            content: '你是一位精通中国传统命理学的大师，能够根据日期和农历信息提供准确的运势分析。'
+            content: '你是一位精通中国传统命理学的大师，擅长根据日期和农历信息提供详细的运势分析。请严格按照用户要求的格式输出，保持传统文化的庄重感。'
           },
           {
             role: 'user',
             content: prompt
           }
         ],
-        max_tokens: 800,
+        max_tokens: 1200,
         temperature: 0.7
       })
 
       return {
         success: true,
-        fortune: response.data.choices[0].message.content
+        fortune: response.data.choices[0].message.content,
+        date: dateString,
+        lunarDate: lunarDate
       }
     } catch (error) {
       console.error('获取每日运势失败:', error)
+      
+      // 默认运势内容
+      const targetDate = date ? new Date(date) : new Date()
+      const dateString = targetDate.toLocaleDateString('zh-CN')
+      const defaultFortune = `黄道吉日
+${dateString}
+农历吉日 吉
+宜 祈福上香 拜访长辈 整理房间
+忌 冲动购物 与人争执 过度饮食
+
+财运★★★★☆
+财运平稳，有小额收入机会，宜谨慎理财。
+
+事业★★★★☆
+工作运势良好，适合推进重要项目，与同事关系和谐。
+
+感情★★★★☆
+感情运势平稳，单身者宜多参加社交活动。
+
+健康★★★★★
+身体状况良好，注意作息规律和饮食平衡。
+
+今日建议
+多行善事，保持善念，诚心祈福，福运自然来临。
+
+今日幸运
+幸运颜色: 金色
+幸运数字: 8, 18, 28
+幸运方位: 东南
+吉时: 09:00-11:00`
+
       return {
         success: false,
-        fortune: '今日运势良好，诸事顺利。建议多行善事，保持善念，福运自然来临。'
+        fortune: defaultFortune,
+        date: dateString,
+        lunarDate: '农历吉日'
       }
     }
+  }
+
+  // 生成缓存键
+  getDailyFortuneCacheKey(date = null) {
+    const targetDate = date ? new Date(date) : new Date()
+    return `dailyFortune_${targetDate.getFullYear()}_${targetDate.getMonth() + 1}_${targetDate.getDate()}`
   }
 }
 

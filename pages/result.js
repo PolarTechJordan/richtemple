@@ -21,6 +21,7 @@ export default function ResultPage() {
       // 获取存储的数据
       const userWish = localStorage.getItem('userWish')
       const divinationNumbers = localStorage.getItem('divinationNumbers')
+      const storedResult = localStorage.getItem('divinationResult')
       
       if (!userWish || !divinationNumbers) {
         router.push('/wish')
@@ -30,13 +31,27 @@ export default function ResultPage() {
       setWish(userWish)
       setNumbers(JSON.parse(divinationNumbers))
 
-      // 调用DeepSeek API进行占卜
+      // 如果已有占卜结果，直接使用
+      if (storedResult) {
+        try {
+          const result = JSON.parse(storedResult)
+          setDivinationResult(result)
+          setLoading(false)
+          return
+        } catch (error) {
+          console.error('解析存储的结果失败:', error)
+        }
+      }
+
+      // 如果没有存储的结果，调用DeepSeek API进行占卜
       try {
         const result = await deepseekService.performDivination(
           userWish, 
           JSON.parse(divinationNumbers)
         )
         setDivinationResult(result)
+        // 存储结果
+        localStorage.setItem('divinationResult', JSON.stringify(result))
       } catch (error) {
         console.error('占卜失败:', error)
         // 使用默认结果
@@ -45,6 +60,7 @@ export default function ResultPage() {
           JSON.parse(divinationNumbers)
         )
         setDivinationResult(defaultResult)
+        localStorage.setItem('divinationResult', JSON.stringify(defaultResult))
       } finally {
         setLoading(false)
       }

@@ -70,6 +70,7 @@ export default function InitialPage() {
           autoPlay
           muted
           playsInline
+          loop
           onEnded={handleVideoEnd}
         />
 
