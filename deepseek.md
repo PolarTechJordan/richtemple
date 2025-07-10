@@ -372,20 +372,51 @@ const initializePage = async () => {
 }
 ```
 
-#### 4. 上香动画循环 (pages/payment-animation.js)
+#### 4. 上香动画优化 (pages/payment-animation.js)
 ```javascript
+// 智能控制视频循环和跳转时机
+const verifyPayment = async () => {
+  // 支付验证延迟调整为4秒，匹配视频时长
+  await new Promise(resolve => setTimeout(resolve, 4000))
+  
+  setPaymentVerified(true)
+  
+  // 支付验证成功后，移除循环属性，让视频自然结束
+  if (videoElement) {
+    videoElement.loop = false
+  }
+}
+
+const handleAnimationEnd = () => {
+  // 只有在支付验证成功后才能结束动画
+  if (paymentVerified) {
+    setAnimationEnded(true)
+    // 显示成功提示2秒后跳转
+    setTimeout(() => {
+      router.push('/merit')
+    }, 2000)
+  }
+}
+
 <video
   className="absolute inset-0 w-full h-full object-cover"
   autoPlay
   muted
   playsInline
-  loop  // 添加循环播放
+  loop  // 初始循环播放
   onEnded={handleAnimationEnd}
+  onLoadedData={handleVideoLoad}  // 获取视频元素引用
 >
   <source src="/videos/3.mp4" type="video/mp4" />
   您的浏览器不支持视频播放
 </video>
 ```
+
+**优化说明**:
+1. **智能时机控制**: 支付验证时间调整为4秒，与视频长度匹配
+2. **动态循环控制**: 支付成功后移除loop属性，让视频自然结束
+3. **优雅跳转**: 视频结束+成功提示显示2秒后跳转
+4. **用户体验**: 避免突然跳转，提供完整的仪式感
 
 ### 优化效果
 1. **更好的用户体验**: 视频循环播放避免黑屏

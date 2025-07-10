@@ -5,6 +5,7 @@ import Head from 'next/head'
 export default function PaymentAnimationPage() {
   const [paymentVerified, setPaymentVerified] = useState(false)
   const [animationEnded, setAnimationEnded] = useState(false)
+  const [videoElement, setVideoElement] = useState(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -19,8 +20,8 @@ export default function PaymentAnimationPage() {
     const verifyPayment = async () => {
       try {
         // 这里应该调用实际的支付验证逻辑
-        // 模拟验证延迟
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        // 模拟验证延迟 - 假设3.mp4大概5-6秒，我们在4秒后验证成功
+        await new Promise(resolve => setTimeout(resolve, 4000))
         
         // 模拟支付成功
         setPaymentVerified(true)
@@ -28,6 +29,12 @@ export default function PaymentAnimationPage() {
         // 存储支付成功状态
         localStorage.setItem('paymentVerified', 'true')
         localStorage.setItem('paymentTime', Date.now().toString())
+        
+        // 支付验证成功后，等待当前视频循环结束再跳转
+        // 移除循环属性，让视频播放完当前循环后结束
+        if (videoElement) {
+          videoElement.loop = false
+        }
         
       } catch (error) {
         console.error('支付验证失败:', error)
@@ -37,14 +44,21 @@ export default function PaymentAnimationPage() {
     }
 
     verifyPayment()
-  }, [router])
+  }, [router, videoElement])
 
   const handleAnimationEnd = () => {
-    setAnimationEnded(true)
-    // 动画结束后自动跳转到功德页面
-    setTimeout(() => {
-      router.push('/merit')
-    }, 1000)
+    // 只有在支付验证成功后才能结束动画
+    if (paymentVerified) {
+      setAnimationEnded(true)
+      // 动画结束后稍等一下再跳转，显示成功提示
+      setTimeout(() => {
+        router.push('/merit')
+      }, 2000)
+    }
+  }
+
+  const handleVideoLoad = (event) => {
+    setVideoElement(event.target)
   }
 
   return (
@@ -63,6 +77,7 @@ export default function PaymentAnimationPage() {
           playsInline
           loop
           onEnded={handleAnimationEnd}
+          onLoadedData={handleVideoLoad}
         >
           <source src="/videos/3.mp4" type="video/mp4" />
           您的浏览器不支持视频播放
