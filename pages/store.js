@@ -204,15 +204,6 @@ export default function StorePage() {
             </div>
           </div>
 
-          {/* 返回按钮 */}
-          <div className="text-center mt-8">
-            <button
-              onClick={() => router.push('/merit')}
-              className="px-6 py-3 text-ink-light hover:text-ink transition-colors duration-300 font-kai border border-ink-light rounded hover:border-ink"
-            >
-              返回功德页面
-            </button>
-          </div>
         </main>
 
       </div>

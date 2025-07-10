@@ -119,14 +119,6 @@ export default function WishPageClient() {
             </div>
           </div>
 
-          {/* 装饰元素 */}
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center space-x-4 text-ink-lighter">
-              <div className="w-12 h-px bg-ink-lighter"></div>
-              <span className="font-kai text-sm">诚心祈福</span>
-              <div className="w-12 h-px bg-ink-lighter"></div>
-            </div>
-          </div>
         </main>
       </div>
 
