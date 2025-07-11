@@ -140,12 +140,12 @@ export default function ResultPage() {
         
         case 'numbered-item':
           return (
-            <div key={item.key} className="mb-4">
-              <div className="bg-gradient-to-r from-gold-temple/10 to-transparent rounded-lg p-4 border-l-4 border-gold-temple">
+            <div key={item.key}>
+              <div className="p-4">
                 <p 
                   className="font-kai text-ink leading-relaxed"
                   dangerouslySetInnerHTML={{
-                    __html: item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
+                    __html: item.content.replace(/^\d+\.\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
                   }}
                 />
               </div>
