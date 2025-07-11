@@ -136,16 +136,17 @@ export default function ResultPage() {
           <ClientOnlyWalletConnect />
         </div>
 
-        <div className="container mx-auto px-4 py-8 md:py-16">
-          {/* 页面头部 */}
-          <header className="text-center mb-12">
-            <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
-            &#8203;
-            </h1>
-          </header>
+        <div className="container mx-auto px-4 py-8 md:py-16 min-h-screen flex items-center justify-center">
+          <div className="w-full max-w-4xl">
+            {/* 页面头部 */}
+            <header className="text-center mb-12">
+              <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
+              &#8203;
+              </h1>
+            </header>
 
-          {/* 占卜结果区域 */}
-          <main className="max-w-4xl mx-auto">
+            {/* 占卜结果区域 */}
+            <main className="max-w-4xl mx-auto">
             {divinationResult && (
               <div className="floating-card mb-8">
                 <div className="mb-6">
@@ -315,6 +316,7 @@ export default function ResultPage() {
               </div>
             </div>
           </main>
+        </div>
         </div>
 
       </div>

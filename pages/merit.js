@@ -399,9 +399,13 @@ export default function MeritPage() {
         />
 
         {/* 主内容区 */}
-        <main className="ml-64 min-h-screen p-4 md:p-8">
-          <div className="max-w-4xl mx-auto">
-            {renderContent()}
+        <main className="ml-64 min-h-screen p-4 md:p-8 flex items-center justify-center">
+          <div className="max-w-4xl w-full mx-auto">
+            <div className="flex items-center justify-center min-h-[80vh]">
+              <div className="w-full max-w-2xl">
+                {renderContent()}
+              </div>
+            </div>
           </div>
         </main>
       </div>
