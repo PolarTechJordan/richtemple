@@ -69,6 +69,130 @@ export default function ResultPage() {
     initializePage()
   }, [router])
 
+  // 格式化占卜结果内容
+  const formatDivinationContent = (content) => {
+    if (!content) return null
+    
+    // 将内容按行分割
+    const lines = content.split('\n').filter(line => line.trim())
+    const formattedContent = []
+    
+    lines.forEach((line, index) => {
+      const trimmedLine = line.trim()
+      
+      // 处理标题（如：卦象解析、运势预测、神明指引）
+      if (trimmedLine.match(/^[一-龥]{2,6}$/)) {
+        formattedContent.push({
+          type: 'title',
+          content: trimmedLine,
+          key: `title-${index}`
+        })
+      }
+      // 处理数字列表（如：1. 、2. 、3. ）
+      else if (trimmedLine.match(/^\d+\.\s/)) {
+        formattedContent.push({
+          type: 'numbered-item',
+          content: trimmedLine,
+          key: `numbered-${index}`
+        })
+      }
+      // 处理带星号的重点内容（如：**优势**、**风险**）
+      else if (trimmedLine.includes('**')) {
+        formattedContent.push({
+          type: 'highlighted',
+          content: trimmedLine,
+          key: `highlighted-${index}`
+        })
+      }
+      // 处理缩进内容（如：- 开头的内容）
+      else if (trimmedLine.startsWith('-')) {
+        formattedContent.push({
+          type: 'bullet-item',
+          content: trimmedLine,
+          key: `bullet-${index}`
+        })
+      }
+      // 处理普通段落
+      else if (trimmedLine) {
+        formattedContent.push({
+          type: 'paragraph',
+          content: trimmedLine,
+          key: `paragraph-${index}`
+        })
+      }
+    })
+    
+    return formattedContent
+  }
+
+  // 渲染格式化后的内容
+  const renderFormattedContent = (formattedContent) => {
+    if (!formattedContent) return null
+    
+    return formattedContent.map(item => {
+      switch (item.type) {
+        case 'title':
+          return (
+            <h4 key={item.key} className="text-xl font-kai font-bold text-red-temple mb-4 mt-6 first:mt-0">
+              {item.content}
+            </h4>
+          )
+        
+        case 'numbered-item':
+          return (
+            <div key={item.key} className="mb-4">
+              <div className="bg-gradient-to-r from-gold-temple/10 to-transparent rounded-lg p-4 border-l-4 border-gold-temple">
+                <p 
+                  className="font-kai text-ink leading-relaxed"
+                  dangerouslySetInnerHTML={{
+                    __html: item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
+                  }}
+                />
+              </div>
+            </div>
+          )
+        
+        case 'highlighted':
+          return (
+            <div key={item.key} className="mb-3">
+              <p 
+                className="font-kai text-ink leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
+                }}
+              />
+            </div>
+          )
+        
+        case 'bullet-item':
+          return (
+            <div key={item.key} className="mb-2 ml-4">
+              <p 
+                className="font-kai text-ink-light leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: item.content.replace(/^-\s*/, '• ').replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
+                }}
+              />
+            </div>
+          )
+        
+        case 'paragraph':
+          return (
+            <p 
+              key={item.key} 
+              className="font-kai text-ink-light leading-relaxed mb-3"
+              dangerouslySetInnerHTML={{
+                __html: item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-red-temple">$1</strong>')
+              }}
+            />
+          )
+        
+        default:
+          return null
+      }
+    })
+  }
+
   const handlePayment = async () => {
     if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
       alert('请输入有效的香火数量')
@@ -166,43 +290,48 @@ export default function ResultPage() {
                 <div className="space-y-6">
                   {/* 卦象解析 */}
                   {divinationResult.divination && (
-                    <div className="border-l-4 border-gold-temple pl-4">
-                      <h3 className="font-kai text-lg text-ink mb-2">卦象解析</h3>
-                      <p className="font-kai text-ink-light leading-relaxed">
-                        {divinationResult.divination}
-                      </p>
+                    <div className="border-l-4 border-gold-temple pl-6 bg-gradient-to-r from-gold-temple/5 to-transparent rounded-r-lg py-4">
+                      <h3 className="font-kai text-xl font-bold text-gold-temple mb-4">📊 卦象解析</h3>
+                      <div className="space-y-2">
+                        {renderFormattedContent(formatDivinationContent(divinationResult.divination))}
+                      </div>
                     </div>
                   )}
 
                   {/* 运势预测 */}
                   {divinationResult.prediction && (
-                    <div className="border-l-4 border-jade pl-4">
-                      <h3 className="font-kai text-lg text-ink mb-2">运势预测</h3>
-                      <p className="font-kai text-ink-light leading-relaxed">
-                        {divinationResult.prediction}
-                      </p>
+                    <div className="border-l-4 border-jade pl-6 bg-gradient-to-r from-jade/5 to-transparent rounded-r-lg py-4">
+                      <h3 className="font-kai text-xl font-bold text-jade mb-4">🔮 运势预测</h3>
+                      <div className="space-y-2">
+                        {renderFormattedContent(formatDivinationContent(divinationResult.prediction))}
+                      </div>
                     </div>
                   )}
 
                   {/* 神明指引 */}
                   {divinationResult.advice && (
-                    <div className="border-l-4 border-red-temple pl-4">
-                      <h3 className="font-kai text-lg text-ink mb-2">神明指引</h3>
-                      <p className="font-kai text-ink-light leading-relaxed">
-                        {divinationResult.advice}
-                      </p>
+                    <div className="border-l-4 border-red-temple pl-6 bg-gradient-to-r from-red-temple/5 to-transparent rounded-r-lg py-4">
+                      <h3 className="font-kai text-xl font-bold text-red-temple mb-4">🙏 神明指引</h3>
+                      <div className="space-y-2">
+                        {renderFormattedContent(formatDivinationContent(divinationResult.advice))}
+                      </div>
                     </div>
                   )}
 
                   {/* 运势评分 */}
                   {divinationResult.luck && (
-                    <div className="text-center bg-gradient-to-r from-gold-temple/20 to-red-temple/20 rounded-lg p-4">
-                      <h3 className="font-kai text-lg text-ink mb-2">运势评分</h3>
+                    <div className="text-center bg-gradient-to-r from-gold-temple/20 to-red-temple/20 rounded-lg p-6 border border-gold-temple/30">
+                      <h3 className="font-kai text-xl font-bold text-ink mb-4">⭐ 运势评分</h3>
                       <div className="flex justify-center items-center space-x-2">
-                        <span className="text-3xl font-kai text-red-temple">
+                        <span className="text-4xl font-kai font-bold text-red-temple">
                           {divinationResult.luck}
                         </span>
-                        <span className="text-ink-light font-kai">/10</span>
+                        <span className="text-xl text-ink-light font-kai">/10</span>
+                      </div>
+                      <div className="mt-2 text-sm text-ink-light font-kai">
+                        {divinationResult.luck >= 8 ? '大吉大利' : 
+                         divinationResult.luck >= 6 ? '吉祥如意' : 
+                         divinationResult.luck >= 4 ? '平稳安康' : '需要谨慎'}
                       </div>
                     </div>
                   )}
