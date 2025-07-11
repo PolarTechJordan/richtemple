@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import ClientOnlyWalletConnect from '../components/ClientOnlyWalletConnect'
+import AudioControl from '../components/AudioControl'
 
 export default function CalculatePage() {
   const [wish, setWish] = useState('')
@@ -120,9 +121,10 @@ export default function CalculatePage() {
         {/* 右下角装饰 */}
         <img src="/assets/images/p2/p2_right_btm.png" alt="" className="decoration-img decoration-right-btm" />
 
-        {/* 右上角装饰和钱包连接按钮 */}
+        {/* 右上角装饰和控制按钮 */}
         <img src="/assets/images/p2/p2_right_top.png" alt="" className="decoration-img decoration-right-top" />
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+          <AudioControl />
           <ClientOnlyWalletConnect />
         </div>
 

@@ -5,6 +5,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { wagmiConfig } from '../utils/wagmiConfig'
 import { setupEthereumProtection } from '../utils/ethereumProtection'
+import audioManager from '../utils/audioManager'
 import '@rainbow-me/rainbowkit/styles.css'
 
 const queryClient = new QueryClient()
@@ -28,6 +29,9 @@ export default function App({ Component, pageProps }) {
     
     // 设置ethereum对象保护
     const cleanup = setupEthereumProtection()
+    
+    // 初始化全局音频管理器
+    audioManager.initialize()
     
     return () => {
       document.head.removeChild(meta)

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import FloatingSidebar from './FloatingSidebar'
 import WalletConnectButton from './WalletConnectButton'
+import AudioControl from './AudioControl'
 
 export default function WishPageClient() {
   const [wish, setWish] = useState('')
@@ -76,51 +77,51 @@ export default function WishPageClient() {
         onNavigate={handleSidebarNavigate}
       />
 
-      {/* 钱包连接按钮 */}
-      <div className="absolute top-4 right-4 z-10">
+      {/* 右上角控制按钮 */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+        <AudioControl />
         <WalletConnectButton />
       </div>
 
-      <div className="container mx-auto px-4 py-8 md:py-16 min-h-screen flex items-center justify-center">
-        <div className="w-full max-w-2xl">
-          {/* 页面头部 */}
-          <header className="text-center mb-12 md:mb-20">
-            <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
-            &#8203;
-            </h1>
-          </header>
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        {/* 页面头部 */}
+        <header className="text-center mb-12 md:mb-20">
+          <h1 className="responsive-title font-kai font-light tracking-wider mb-4 text-ink">
+          &#8203;
+          </h1>
+        </header>
 
-          {/* 主内容区 */}
-          <main className="max-w-2xl mx-auto">
-            <div className="floating-card">
-              <div className="mb-8">
-                <label htmlFor="wish" className="block text-ink-light text-lg mb-3 font-kai">
-                  写下您的心愿
-                </label>
-                <textarea 
-                  id="wish"
-                  value={wish}
-                  onChange={handleWishChange}
-                  className="w-full h-40 ink-input font-kai resize-none"
-                  placeholder="请写下您的心愿..."
-                  maxLength={300}
-                />
-                <div className="text-right text-sm text-ink-lighter mt-2">
-                  {wish.length}/300
-                </div>
-              </div>
-              
-              <div className="flex justify-center items-center">
-                <button
-                  onClick={handleNextStep}
-                  className="ink-button"
-                >
-                  下一步
-                </button>
+        {/* 主内容区 */}
+        <main className="max-w-2xl mx-auto">
+          <div className="floating-card">
+            <div className="mb-8">
+              <label htmlFor="wish" className="block text-ink-light text-lg mb-3 font-kai">
+                写下您的心愿
+              </label>
+              <textarea 
+                id="wish"
+                value={wish}
+                onChange={handleWishChange}
+                className="w-full h-40 ink-input font-kai resize-none"
+                placeholder="请写下您的心愿..."
+                maxLength={300}
+              />
+              <div className="text-right text-sm text-ink-lighter mt-2">
+                {wish.length}/300
               </div>
             </div>
-          </main>
-        </div>
+            
+            <div className="flex justify-center items-center">
+              <button
+                onClick={handleNextStep}
+                className="ink-button"
+              >
+                下一步
+              </button>
+            </div>
+          </div>
+
+        </main>
       </div>
 
       {/* 底部装饰 */}

@@ -195,7 +195,7 @@ body {
   /* 右上角装饰 */
   .decoration-right-top {
     top: 30px;
-    right: calc(20px + 2rem + 9vw);
+    right: calc(20px + 3rem + 11vw);
     width: clamp(80px, 15vw, 150px);
     height: auto;
     z-index: 999;

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useAccount } from 'wagmi'
 import ClientOnlyWalletConnect from '../components/ClientOnlyWalletConnect'
+import AudioControl from '../components/AudioControl'
 import deepseekService from '../services/deepseekService'
 
 export default function ResultPage() {
@@ -254,9 +255,10 @@ export default function ResultPage() {
         {/* 左下角装饰 - 固定在页面左下角 */}
         <img src="/assets/images/p2/p2_left_btm.png" alt="" className="fixed bottom-0 left-0 z-0 pointer-events-none scale-75 origin-bottom-left object-contain opacity-60" />
         
-        {/* 右上角装饰和钱包连接按钮 */}
+        {/* 右上角装饰和控制按钮 */}
         <img src="/assets/images/p2/p2_right_top.png" alt="" className="decoration-img decoration-right-top" />
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+          <AudioControl />
           <ClientOnlyWalletConnect />
         </div>
 
