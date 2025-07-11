@@ -126,10 +126,10 @@ export default function CalculatePage() {
           <ClientOnlyWalletConnect />
         </div>
 
-        <div className="container mx-auto px-4 py-8 md:py-16">
-
-          {/* 主内容区 */}
-          <main className="max-w-2xl mx-auto">
+        <div className="container mx-auto px-4 py-8 md:py-16 min-h-screen flex items-center justify-center">
+          <div className="w-full max-w-2xl">
+            {/* 主内容区 */}
+            <main className="max-w-2xl mx-auto">
             {/* 显示用户愿望 - 居中放大 */}
             <div className="text-center mb-8">
               <div className="bg-ink/5 rounded-lg p-6 mx-auto max-w-xl">
@@ -189,6 +189,7 @@ export default function CalculatePage() {
             </div>
 
           </main>
+        </div>
         </div>
 
        </div>
